@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+            font-family: "Jost", sans-serif;
+            font-family: "Quicksand", sans-serif;
+
+        }
+
+
+        body {
+            background: #f3f2ef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            height: 100vh;
+            /* width: 100vw; */
+        }
+
+        .box {
+            height: 60vh;
+            width: 20vw;
+            /* border: 2px solid; */
+            border-radius: 0.5rem;
+            box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
+            background: #a5bbdd;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .wave {
+            opacity: 0.3;
+            position: absolute;
+            top: 140%;
+            left: 50%;
+            background: white;
+            width: 50rem;
+            height: 50rem;
+            margin-left: -25rem;
+            margin-top: -25rem;
+            transform-origin: 50% 48%;
+            border-radius: 43%;
+            animation: drift 3000ms infinite linear;
+            z-index: 1;
+            /* overflow: hidden; */
+        }
+
+        .wave_two {
+            animation: drift 5000ms infinite linear;
+            z-index: 2 !important;
+            opacity: 0.2;
+
+        }
+
+        .wave_three {
+            animation: drift 7000ms infinite linear;
+            z-index: 3 !important;
+            opacity: 0.1;
+
+        }
+
+        @keyframes drift {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+
+        #weather_icon {
+            height: 55%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+        }
+
+        #weather_icon>.fa-sun {
+            font-size: 4rem;
+            animation: dip_anime 1s linear infinite alternate;
+            /* transition: all 0.1s ease-in-out; */
+        }
+
+        @keyframes dip_anime {
+            from {
+                transform: scale(1.1);
+            }
+
+            to {
+                transform: scale(1.5);
+            }
+
+        }
+
+        .weather_info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 1.3rem;
+            align-items: center;
+            flex-wrap: wrap;
+            /* border: 2px solid; */
+            /* margin-top: 200px; */
+            line-height: 1.6;
+        }
+
+        .fa-street-view {
+            animation: slide 3s linear infinite alternate;
+        }
+
+        @keyframes slide {
+            from {
+                transform: translateX(-15px);
+            }
+
+            to {
+                transform: translateX(0.5px);
+            }
+        }
+
+        .location {
+            margin-top: 1.2rem;
+
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+
+        #date {
+
+            color: #57606f;
+            font-size: 1.2rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+    </style>
+    <title>Weather App</title>
+</head>
+
+<body>
+    <div class="box">
+        <div class="wave wave_one"></div>
+        <div class="wave wave_two"></div>
+        <div class="wave wave_three"></div>
+
+        <div id="weather_icon">
+            <i class="fa-solid fa-sun" style="color: rgb(222, 182, 22)"></i>
+        </div>
+
+        <div class="weather_info">
+            <div class="location"><i class="fa-solid fa-street-view "
+                    style="color: rgb(224, 223, 222)"></i><strong>{%city%}, {%country%}</strong></div>
+            <p id="date">WED | OCT 14 | 11:20PM</p>
+            <h2 id="temp">{%tempval%}&deg;C</h2>
+            <h4 class="temp_min_max">Min {%tempmin%}&deg;C| Max {%tempmax%}&deg;C</h4>
+        </div>
+    </div>
+
+    <script>
+        const update_cal = document.getElementById("date");
+        var weather_icon = document.getElementById("weather_icon");
+
+        const tempStat = "{%tempStat%}";
+
+        if (tempStat == "Sunny") {
+            weather_icon.innerHTML = `<i class="fa-solid fa-sun" style="color: #eccc68"></i>`;
+        }
+        else if (tempStat == "Clouds") {
+            weather_icon.innerHTML = `<i class="fa-solid fa-cloud" style="color: #dfe4ea"></i>`;
+        }
+        else if (tempStat == "Rainy") {
+            weather_icon.innerHTML = `<i class="fa-solid fa-rain" style="color: #a4b0be"></i>`;
+        }
+        else {
+            weather_icon.innerHTML = `<i class="fa-solid fa-cloud" style="color: #44c3de"></i>`;
+        }
+
+
+        const currDay = () => {
+            var weekDay = [
+                "sun",
+                "mon",
+                "tue",
+                "wed",
+                "thur",
+                "fri",
+                "sat"
+
+            ];
+
+            let currDay = new Date();
+
+            return weekDay[currDay.getDay()];
+
+        }
+
+        const currMonth = () => {
+            var currMonth = [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sept",
+                "Oct",
+                "Nov",
+                "Dec"
+
+            ];
+            var now = new Date();
+            var month = currMonth[now.getMonth()];
+            var day = now.getDate();
+
+            let hours = now.getHours();
+            let min = now.getMinutes();
+
+            let period = "AM";
+
+            if (hours > 11) {
+                period = "PM";
+                if (hours > 23) hours -= 12;
+
+            }
+            if (min < 10) {
+                min = "0" + min;
+            }
+            return `${month} ${day} | ${hours} : ${min} ${period}`;
+
+        }
+        update_cal.innerHTML = currDay() + " | " + currMonth();
+
+    </script>
+
+</body>
+
+</html>
